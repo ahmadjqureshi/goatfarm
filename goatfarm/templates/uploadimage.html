@@ -1,0 +1,12 @@
+{% load static %}
+
+<table id="{{ RowID }}" width=60% align=Center>
+  <tr>
+    <td>
+      <br>
+        <img src="{% static 'images/' %}{{ filename }}" alt="{{ filename }}"/>
+	    <button id="deleteImg" name="deleteImg" value="{{ RowID }}" onclick="delImg(this.value)">Delete</button>
+      <br>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,72 @@
+body{
+    background-color: linen;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0px;
+}
+
+.container {
+    display: grid;
+    grid-gap: 3px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 20px auto auto auto auto auto 40px;
+    grid-template-areas:
+
+    "n n n n n n n n n n n n"
+    ". h h h h h h h h h h ."
+    ". . s s s s s s s s . ."
+    "e e e e e e e e e e e e"
+    ". c c c c c c c c c c ."
+    ". d d d d d d d d d d ."
+    ". . f f f f f f f f . ."
+    ;
+}
+
+.nav {
+    height: 20px;
+    background-color: black;
+    grid-area: n;
+}
+
+.header {
+    border-radius: 20px;
+    background-color: lightblue;
+    vertical-align: middle;
+    grid-area: h;
+}
+
+.empty {
+    background-color: transparent;
+    min-height: 40px;
+    grid-area: e;
+}
+
+.search {
+    border-radius: 20px;
+    background-color: #b7b0ea;
+    grid-area: s;
+}
+
+.content {
+    border-radius: 20px;
+    background-color: lightblue;
+    grid-area: c;
+}
+
+.detail {
+    border-radius: 20px;
+    background-color: lightblue;
+    grid-area: d;
+}
+
+.footer {
+    border-radius: 20px;
+    background-color: grey;
+    grid-area: f;
+}
+
+.combobox {
+    border-width: 3px;
+    border-color: grey;
+    border-radius: 10px;
+}

@@ -1,0 +1,240 @@
+{% load static %}
+<html>
+        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="{% static "/css/AddAnimal.css" %}" />
+        <title>CSS Grid</title>
+        <script src="{% static 'js/AddAnimal.js' %}"></script>
+    </head>
+    <body style="background-image: url('{% static "/images/bodybackground.jpg" %}' );">
+
+        <script >
+
+var csrfcookie = function() {
+    var cookieValue = null,
+        name = 'csrftoken';
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+     }
+     return cookieValue;
+   };
+
+   /*Basic Data Entry AJAX Form*/
+   var clientProdInfo  = new XMLHttpRequest();;
+   var clientUploadImage = new XMLHttpRequest();
+   var deleteImage = new XMLHttpRequest();
+   var functionId ;
+   var blockToBeRemoved;
+
+   function uploadbasicinfo()
+   {
+      /* Create a FormData instance */
+      var formData = new FormData();
+      /* Add data to form  */
+      alert(document.getElementById("breedname").value);
+      formData.append( "breedname", document.getElementById("breedname").value);
+      formData.append( "cityname", document.getElementById("cityname").value);
+      formData.append( "heading", document.getElementById("header").value);
+      formData.append( "description", document.getElementById("description").value);
+      formData.append( "price", document.getElementById("price").value);
+      formData.append( "height", document.getElementById("height").value);
+      formData.append( "length", document.getElementById("length").value);
+      formData.append( "neckcircumference", document.getElementById("neckcircumference").value);
+
+      clientProdInfo.open("post", "/addbasicanimalinfo/", true);
+      //clientProdInfo.setRequestHeader("Content-Type", "multipart/form-data");
+      clientProdInfo.setRequestHeader("enctype", "multipart/form-data");
+      clientProdInfo.setRequestHeader('X-CSRFToken', csrfcookie());
+      clientProdInfo.send(formData);  /* Send to server */
+   }
+
+   /* Check the response status for basic product data*/
+   clientProdInfo.onreadystatechange = function()
+   {
+      if (clientProdInfo.readyState == 4 && clientProdInfo.status == 200)
+      {
+        document.getElementById("basicinfo").style.display = "none";
+        document.getElementById("images").style.display = "block";
+      }
+      else
+      {
+            //TBD handle error
+      }
+   }
+
+    /* Upload Image AJAX form*/
+   function uploadImage()
+   {
+      var file1 = document.getElementById("fileToUpload");
+      var formData = new FormData();
+      /* Add the file */
+      formData.append("file1", file1.files[0]);
+
+      clientUploadImage.open("post", "/uploadimage/", true);
+      clientUploadImage.setRequestHeader("enctype", "multipart/form-data");
+      clientUploadImage.setRequestHeader('X-CSRFToken', csrfcookie());
+      clientUploadImage.send(formData);  /* Send to server */
+      functionId = 1;
+   }
+
+   /* Delete Image AJAX Form */
+   function delImg(imgRowID)
+   {
+      alert("RowID: " + imgRowID);
+      blockToBeRemoved = imgRowID;
+      var formData = new FormData();
+      /* Add the file */
+      formData.append("ImageID", imgRowID);
+
+      deleteImage.open("post", "/deleteimage/", true);
+      deleteImage.setRequestHeader("enctype", "multipart/form-data");
+      deleteImage.setRequestHeader('X-CSRFToken', csrfcookie());
+      deleteImage.send(formData);  /* Send to server */
+      functionId = 2;
+   }
+
+
+   /* Check the response status for Image upload or delete */
+   clientUploadImage.onreadystatechange = function()
+   {
+
+      if (clientUploadImage.readyState == 4 && clientUploadImage.status == 200)
+      {
+         if ( functionId == 1 )
+         {
+             var imgTable = document.getElementById("UploadedFilesImageTable");
+	         imgTable.innerHTML =imgTable.innerHTML + clientUploadImage.responseText;
+	         alert(clientUploadImage.responseText);
+             document.getElementById("fileToUpload").value = '';
+         }
+
+         if ( functionId == 2 )
+         {
+             alert("trying to remove element " + blockToBeRemoved);
+             var element = document.getElementById(blockToBeRemoved);
+             element.parentNode.removeChild( element );
+         }
+      }
+      else
+      {
+
+      }
+   }
+
+   /* Check the response status for Image upload or delete */
+   deleteImage.onreadystatechange = function()
+   {
+      if (clientUploadImage.readyState == 4 && clientUploadImage.status == 200)
+      {
+         if ( functionId == 1 )
+         {
+             var imgTable = document.getElementById("UploadedFilesImageTable");
+	         imgTable.innerHTML =imgTable.innerHTML + clientUploadImage.responseText;
+	         alert(clientUploadImage.responseText);
+             document.getElementById("fileToUpload").value = '';
+         }
+
+         if ( functionId == 2 )
+         {
+             alert("trying to remove element " + blockToBeRemoved);
+             var element = document.getElementById(blockToBeRemoved);
+             element.parentNode.removeChild( element );
+         }
+      }
+      else
+      {
+
+      }
+   }
+
+        </script>
+
+        <div class="container">
+            <div class="nav"></div>
+            <div class="header" align="center">
+                <h1>Add Animal</h1>
+            </div>
+            <div class="basicdata" align="center" id="basicinfo">
+                    <table>
+                        <tr>
+                            <td align="left">Breed:</td>
+                            <td>
+                                <select class="combobox" name="breed" id="breedname" class="combobox">
+                                  <option value="none">Select Breed</option>
+                                  {% for key , val in AnimalTypes.items %}
+                                      <optgroup label="{{ key }}">
+                                          {% for value in val %}
+                                            <option value="{{ value.BreedId }},{{ value.AnimalType.TypeID }}"> {{ value.Name }}</option>
+                                          {% endfor %}
+                                      </optgroup>
+                                  {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" valign="top">City:</td>
+                            <td align="left">
+                            <select class="combobox" name="cityname" id="cityname" class="combobox">
+                                <option value="none">Select City</option>
+                                {% for key , val in CityNames.items %}
+                                    <option value="{{ key }}"> {{ val }}</option>
+                                {% endfor %}
+                            </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" valign="top"> Title: </td>
+                            <td align="left">
+                                <input type="text" id="header" name="header"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" valign="top"> Description: </td>
+                            <td align="left">
+                                <textarea name="description" id="description" cols="40" rows="5"></textarea>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Price:</td>
+                            <td> <input type="text" id="price" name="price"/> </td>
+                        </tr>
+                        <tr>
+                            <td>Height:</td>
+                            <td> <input type="text" id="height" name="height"/> </td>
+                        </tr>
+
+                        <tr>
+                            <td>Length:</td>
+                            <td> <input type="text" id="length" name="length"/> </td>
+                        </tr>
+
+                        <tr>
+                            <td>Neck Circumference:</td>
+                            <td> <input type="text" id="neckcircumference" name="neckcircumference"/> </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td> <input type="submit" style="border-radius: 10px; border-width: 3px; border-color: grey;" value="Add" onclick="uploadbasicinfo()"/></td>
+                        </tr>
+                    </table>
+
+            </div>
+            <div class="uploadimages" id="images" style="display: none">
+                <div align="center">
+                    <span> <input type="file" name="fileToUpload" id="fileToUpload"> </span>
+                    <span> <input type="submit" style="border-radius: 10px; border-width: 3px; border-color: grey;" value="Add" onclick="uploadImage()" />  </span>
+                </div>
+                <div id="UploadedFilesImageTable" align="center"></div>
+            </div>
+            <div class="footer"></div>
+        </div>
+     </body>
+</html>

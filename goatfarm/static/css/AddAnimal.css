@@ -1,0 +1,47 @@
+
+
+.container {
+    display: grid;
+    grid-gap: 3px;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 20px  auto auto auto 20px;
+    grid-template-areas:
+
+    "n n n n n n"
+    ". h h h h ."
+    ". d d d d ."
+    ". i i i i ."
+    ". . f f . ."
+    ;
+}
+
+.nav {
+    height: 20px;
+    background-color: black;
+    grid-area: n;
+}
+
+.header {
+    border-radius: 20px;
+    background-color: lightblue;
+    vertical-align: middle;
+    grid-area: h;
+}
+
+.basicdata {
+    border-radius: 20px;
+    background-color: lightblue;
+    grid-area: d;
+}
+
+.uploadimages {
+    border-radius: 20px;
+    background-color: lightblue;
+    grid-area: i;
+}
+
+.footer {
+    border-radius: 20px;
+    background-color: grey;
+    grid-area: f;
+}

@@ -1,0 +1,75 @@
+{% load static %}
+<html>
+    <head>
+        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="{% static "/css/goatfarm.css" %}" />
+        <title>CSS Grid</title>
+    </head>
+    <body style="background-image: url('{% static "/images/bodybackground.jpg" %}' );">
+        <div class="container">
+            <div class="nav"></div>
+            <div class="header">
+                <table>
+                    <tr>
+                        <td>
+                            <span></span>
+                            <span style="padding: 20px; opacity=1;"> GoatFarm </span>
+                        </td>
+                        <td>
+                            <span>
+                                <select class="combobox" name="breed" id="breedname" class="combobox">
+                                  <option value="none">Select Breed</option>
+                                  {% for key , val in AnimalTypes.items %}
+                                      <optgroup label="{{ key }}">
+                                          {% for value in val %}
+                                            <option value="{{ value.BreedId }}"> {{ value.Name }}</option>
+                                          {% endfor %}
+                                      </optgroup>
+                                  {% endfor %}
+
+                                </select>
+                            </span>
+                        </td>
+                        <td>
+                            <select class="combobox" name="minprice" id="minprice" class="combobox">
+                                  <option value="none">Minimum Price</option>
+                            </select>
+                        </td>
+                </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <select class="combobox" name="maxprice" id="maxprice" class="combobox">
+                                  <option value="none">Maximum Price</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="search" style="display: none;">
+                Filters/Search
+            </div>
+            <div class="empty">
+
+            </div>
+            <div class="content">
+                CONTENT: goes here!
+                <div>Quick brown fox jump over a lazy dog</div>
+                <div>Quick brown fox jump over a lazy dog</div>
+                <div>Quick brown fox jump over a lazy dog</div>
+                <div>Quick brown fox jump over a lazy dog</div>
+                <div>Quick brown fox jump over a lazy dog</div>
+                <div>Quick brown fox jump over a lazy dog</div>
+                <div>Quick brown fox jump over a lazy dog</div>
+                <div>Quick brown fox jump over a lazy dog</div>
+            </div>
+            <div class="detail">
+                DETAILS
+            </div>
+            <div class="footer">
+                FOOTER
+            </div>
+        </div>
+    </body>
+</html>
